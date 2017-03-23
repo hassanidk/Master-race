@@ -19,14 +19,17 @@ class Piste extends Phaser.State
 
     @graphics.moveTo -(@nbPistesHalf * @decalageTop), 0
 
-    console.log 15.toString(16)
-
+    # Colors
     colors = [0xffd900, 0xff0000, 0x00ff00, 0x0000ff, 0xff00ff, 0x00ffff, 0xdfdf00, 0x1023aa, 0xaa00aa]
 
     cmpt = 0
-    pointX = -@nbPistesHalf * (@size + @decalageBottom)
+    pointX = -@nbPistesHalf * (@size + @decalageBottom) + @decalageBottom / 2
 
     while cmpt < @nbPistes
+      console.log "Iter " + cmpt
+      console.log pointX
+      console.log pointX + @size
+
       @graphics.moveTo 10, 0
       @graphics.beginFill colors[cmpt]
       @graphics.lineTo pointX, @game.world.height / 2
@@ -34,10 +37,7 @@ class Piste extends Phaser.State
       @graphics.endFill()
 
       pointX += @size + @decalageBottom
-
       cmpt += 1
-
-    console.log pointX
 
     getRandomColor: ->
 
