@@ -28,7 +28,7 @@ class Menu extends Phaser.State
   update: ->
     # Si on clique ...
     if @input.activePointer.justPressed()
-      @state.start 'Game'
+      @state.start 'Piste'
 
   toggleSound: ->
     if @soundEnabled then @disableSound() else @enableSound()
