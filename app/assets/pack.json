@@ -1,0 +1,58 @@
+{
+  "preload":
+  [
+    {
+      "type": "image",
+      "key": "preloadBar",
+      "url": "assets/img/preload-bar.png"
+    }
+  ],
+  "main":
+  [
+
+  ],
+  "menu":
+  [
+    {
+      "type": "image",
+      "key": "menu-background",
+      "url": "assets/img/menu-background-960.jpg"
+    },
+  	{
+  		"type": "image",
+  		"key": "soundOff",
+  		"url": "assets/img/switch-off-sound_256.png"
+  	},
+  	{
+  		"type": "image",
+  		"key": "soundOn",
+  		"url": "assets/img/speakers-sound_256.png"
+  	},
+  	{
+  		"type": "image",
+  		"key": "fullScreen",
+  		"url": "assets/img/fullscreen_256.png"
+  	}
+  ],
+  "game":
+  [
+    {
+      "type": "image",
+      "key": "game-background",
+      "url": "assets/img/game-background-960.jpg"
+    },
+    {
+      "type": "image",
+      "key": "game-platform",
+      "url": "assets/img/game-platform.png"
+    }
+  ],
+  "combat":
+  [
+  	{
+  		"type": "image",
+  		"key" : "guile",
+  		"url" :"assets/img/old-town_960.jpg"
+  	}
+  ]
+}
