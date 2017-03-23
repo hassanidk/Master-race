@@ -4,7 +4,11 @@
   "description": "Game runner made with Phaser",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "all": "npm run build && npm run serve",
+    "build": "npm run test && gulp build",
+    "clean": "gulp clean",
+    "serve": "http-server dist",
+    "test": "gulp lint"
   },
   "keywords": [
     "Phaser",
