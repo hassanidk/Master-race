@@ -16,7 +16,7 @@ Boot     = require './boot.coffee'
 Preload  = require './preload.coffee'
 Menu     = require './menu.coffee'
 Game     = require './game.coffee'
-Piste    = require './piste.coffee'
+Piste    = require './piste-test.coffee'
 
 game = new Phaser.Game config.width, config.height, Phaser.AUTO, 'game-stage'
 
