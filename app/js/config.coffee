@@ -1,4 +1,3 @@
-# Configuration du jeu
 module.exports =
   width: 960
   height: 640

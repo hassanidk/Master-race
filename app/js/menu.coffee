@@ -1,5 +1,7 @@
 Phaser = require 'Phaser'
 
+TrackManager = require './track-manager.coffee'
+TrackStyles = require './track-styles.coffee'
 config = require './config.coffee'
 
 class Menu extends Phaser.State
@@ -9,6 +11,12 @@ class Menu extends Phaser.State
     @load.pack 'menu', config.pack
 
   create: ->
+    # TODO
+
+    @trackManager = new TrackManager(TrackStyles.Flat)
+
+    @state.start 'Piste'
+
     # Set game background
     @game.add.tileSprite 0, 0, config.width, config.height, 'menu-background'
 

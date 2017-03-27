@@ -1,8 +1,13 @@
 Phaser = require 'Phaser'
 config = require './config.coffee'
+TrackStyles = require './track-styles.coffee'
+
+# TODO
+TrackManager = require './track-manager.coffee'
 
 class Game extends Phaser.State
-  constructor: -> super
+  constructor: ->
+    super
 
   preload: ->
     @load.pack 'game', config.pack
