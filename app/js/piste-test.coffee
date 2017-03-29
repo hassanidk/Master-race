@@ -1,5 +1,12 @@
 Phaser = require 'Phaser'
+
+TrackManager = require './track-manager.coffee'
+TrackManagerFlat = require './track-manager-flat.coffee'
+TrackManagerCircle = require './track-manager-circle.coffee'
+
 config = require './config.coffee'
+debug  = require './debug.coffee'
+debugThemes = require './debug-themes.coffee'
 
 class PistePhaser extends Phaser.State
   constructor: -> super
@@ -14,6 +21,9 @@ class PistePhaser extends Phaser.State
     @decalageTop = 0
     @decalageBottom = 100
     @size = 150
+
+    # trackManager = new TrackManagerFlat(@game, 5, 150)
+    trackManager = new TrackManagerCircle(@game, 5, 150)
 
     @nbPistesHalf = @nbPistes / 2
 
@@ -48,6 +58,7 @@ class PistePhaser extends Phaser.State
     # @sprite.anchor.set 0.5, 0
     """
 
+    """
     # Si les pistes forment un cercle
     @graphics = @game.add.graphics @game.world.centerX, @game.world.centerY
 
@@ -102,9 +113,10 @@ class PistePhaser extends Phaser.State
     @graphics.lineTo @halfWidth + @size, @halfHeight
     @graphics.lineTo @halfWidth - @size, @halfHeight
     @graphics.endFill()
+    """
 
-    @sprite = @game.add.sprite 0, 0, 'bg'
-    @sprite.mask = @graphics
+    # @sprite = @game.add.sprite 0, 0, 'bg'
+    # @sprite.mask = @graphics
 
 
   """

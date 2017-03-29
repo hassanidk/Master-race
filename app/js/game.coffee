@@ -1,28 +1,25 @@
 Phaser = require 'Phaser'
-config = require './config.coffee'
-TrackStyles = require './track-styles.coffee'
 
-# TODO
 TrackManager = require './track-manager.coffee'
+
+config = require './config.coffee'
+debug  = require './debug.coffee'
+debugThemes = require './debug-themes.coffee'
 
 class Game extends Phaser.State
   constructor: ->
+    debug 'Constructor...', @, 'info', 30, debugThemes.Phaser
     super
 
   preload: ->
+    debug 'Preload...', @, 'info', 30, debugThemes.Phaser
+
     @load.pack 'game', config.pack
 
     @game.load.spritesheet 'dude', 'assets/img/dude.png', 32, 48
 
   create: ->
-
-    """
-    # Simple test to know if vars are 'saved' between states
-    if @hello?
-      console.log "Hello var already exists!"
-
-    @hello = "Hello"
-    """
+    debug 'Create...', @, 'info', 30, debugThemes.Phaser
 
     # Start physics system
     @game.physics.startSystem Phaser.Physics.ARCADE
