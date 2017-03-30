@@ -15,10 +15,9 @@ class TrackManager
   @MIN_SHIFT_CENTER = 0
   @MAX_SHIFT_CENTER = Infinity
 
-  constructor: (game, nbTracks, trackSize, shiftCenter=0) ->
+  constructor: (game, nbTracks, trackSizeOut, trackSizeCenter, shiftCenter=0) ->
     debug 'Constructor...', @, 'info', 30, debugThemes.Tracks
 
-    # Assertions
     assert game?, "Phaser game does not exist"
 
     assert nbTracks >= TrackManager.MIN_NB_TRACKS, "nbTracks is too low"
@@ -27,23 +26,40 @@ class TrackManager
     assert shiftCenter >= TrackManager.MIN_SHIFT_CENTER, "shiftCenter is too low"
     assert shiftCenter <= TrackManager.MAX_SHIFT_CENTER, "shiftCenter is too high"
 
-    # Vars initialization froms args
+    # Game phaser component
+    @game = game
+
+    # Group of tracks
     @nbTracks = nbTracks
-    @trackSize = trackSize
+    @nbTracksHalf = @nbTracks / 2
+
+    # Track properties
+    @trackSizeOut = trackSizeOut
+    @trackSizeCenter = trackSizeCenter
     @shiftCenter = shiftCenter
+
+    # Group for displayed objects
+    @tracksGroup = @game.add.group()
 
     # Tracks will be stored in this array
     @tracks = new Array(@nbPistes)
+
+  destroy: ->
+    for track in @tracks
+      track.destroy()
+
+    @tracksGroup.destroy()
 
   toString: ->
     debug 'ToString...', @, 'info', 30, debugThemes.Tracks
 
     return """
     TrackManager :
-      - Number of tracks : #{@nbTracks}
-      - Track Size       : #{@tracksSize}
-      - Shift Center     : #{@shiftCenter}
-      - Tracks           :
+      - Number of tracks  : #{@nbTracks}
+      - Track Size Out    : #{@trackSizeOut}
+      - Track Size Center : #{@trackSizeCenter}
+      - Shift Center      : #{@shiftCenter}
+      - Tracks            :
         #{@tracks}
     """
 

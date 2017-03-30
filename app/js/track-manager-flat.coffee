@@ -1,63 +1,108 @@
 Phaser = require 'Phaser'
 assert = require 'assert'
 
+Coordinates = require './coordinates.coffee'
 Track        = require './track.coffee'
 TrackManager = require './track-manager.coffee'
+
+
 debug        = require './debug.coffee'
 debugThemes  = require './debug-themes.coffee'
 colors       = require './colors.coffee'
 config       = require './config.coffee'
 
 class TrackManagerFlat extends TrackManager
-  @MIN_SHIFT_TRACKS = 0
-  @MAX_SHIFT_TRACKS = Infinity
+  @MIN_SHIFT_OUT = 0
+  @MAX_SHIFT_OUT = Infinity
 
-  constructor: (game, nbTracks, trackSize, shiftCenter=0, shiftTracks=20) ->
+  constructor: (game, nbTracks, trackSizeOut, trackSizeCenter, shiftCenter=0, shiftOut=20, outHeight=null, centerHeight=null) ->
     debug 'Constructor...', @, 'info', 30, debugThemes.Tracks
 
-    super(game, nbTracks, trackSize, shiftCenter)
+    super(game, nbTracks, trackSizeOut, trackSizeCenter, shiftCenter)
 
-    assert shiftTracks >= TrackManagerFlat.MIN_SHIFT_TRACKS, "shiftTracks is too low"
-    assert shiftTracks <= TrackManagerFlat.MAX_SHIFT_TRACKS, "shiftTracks is too high"
+    assert shiftOut >= TrackManagerFlat.MIN_SHIFT_OUT, "shiftTracks is too low"
+    assert shiftOut <= TrackManagerFlat.MAX_SHIFT_OUT, "shiftTracks is too high"
 
-    @shiftTracks = shiftTracks
+    if not outHeight?
+      outHeight = @game.world.height
 
-    nbTracksHalf = @nbTracks / 2
+    if not centerHeight?
+      centerHeight = @game.world.centerY
 
-    cmpt = 0
-    pointX = -nbTracksHalf * (@trackSize + @shiftTracks) + @shiftTracks / 2
+    @shiftOut = shiftOut
+    @outHeight = outHeight
+    @centerHeight = centerHeight
 
-    graphics = game.add.graphics game.world.centerX, game.world.centerY
+    # Finally create tracks
+    @createTracks()
 
-    graphics.moveTo -(@nbPistesHalf * @shiftCenter), 0
+  createTracks: () ->
+    startCenterX = @game.world.centerX - @nbTracksHalf * (@trackSizeCenter + @shiftCenter) + @shiftCenter / 2
+    startCenterY = @centerHeight
 
-    while cmpt < @nbTracks
-      graphics.moveTo @shiftCenter, 0
+    startOutX = @game.world.centerX - @nbTracksHalf * (@trackSizeOut + @shiftOut) + @shiftOut / 2
+    startOutY = @outHeight
 
-      if cmpt >= colors.length
-        color = colors[colors.length - 1]
-      else
-        color = colors[cmpt]
+    startCenter = new Coordinates startCenterX, startCenterY
+    startOut = new Coordinates startOutX, startOutY
 
-      graphics.beginFill color
-      graphics.lineTo pointX, game.world.height / 2
-      graphics.lineTo pointX + @trackSize, game.world.height / 2
-      graphics.endFill()
-
-      pointX += @trackSize + @shiftTracks
-      cmpt += 1
+    for i in [0..@nbTracks - 1] by 1
+      @createTrackGraphics(i, startCenter, startOut)
+      startCenter.x += @trackSizeCenter + @shiftCenter
+      startOut.x += @trackSizeOut + @shiftOut
 
     ###
-    sprite = game.add.sprite game.world.centerX, game.world.centerY, graphics.generateTexture()
+    sprite = game.add.sprite game.world.centerX, game.world.centerY, @graphics.generateTexture()
     sprite.anchor.set 0.5, 0
     ###
 
-    ok = game.add.sprite 0, 0, 'bg'
-    ok.mask = graphics
+    ###
+    ok = @game.add.sprite 0, 0, 'bg'
+    ok.mask = @graphics
+    ###
 
-    # ok = new TrackGraphics(game, 'bg')
+    debug @toString(), @
 
-    # @tracks[0] = new Track game, 0, 0, 'bg', graphics
+    # ok = new Track@graphics(game, 'bg')
+
+    # @tracks[0] = new Track game, 0, 0, 'bg', @graphics
+
+  createTrackGraphics: (numTrack, startCenter, startOut) ->
+    # Polygone, 4 sommets
+
+    graphics = @game.add.graphics startCenter.x, startCenter.y
+
+    if numTrack >= colors.length
+      color = colors[colors.length - 1]
+    else
+      color = colors[numTrack]
+
+    graphics.beginFill color
+    graphics.lineTo startOut.x - startCenter.x, startOut.y - startCenter.y
+    graphics.lineTo startOut.x + @trackSizeOut - startCenter.x, startOut.y - startCenter.y
+    graphics.lineTo @trackSizeCenter, 0
+    graphics.endFill()
+
+    endCenter = new Coordinates startCenter.x + @trackSizeCenter, startCenter.y
+    endOut = new Coordinates startOut.x + @trackSizeOut, startOut.y
+
+    @tracks[numTrack] = new Track @game, graphics, startCenter, startOut, endCenter, endOut
+
+    ###
+    graphics = @game.create.graphics @game.world.centerX, @game.world.centerY
+
+    if numTrack >= colors.length
+      color = colors[colors.length - 1]
+    else
+      color = colors[numTrack]
+
+    graphics.beginFill color
+    graphics.lineTo pointX, @game.world.height / 2
+    graphics.lineTo pointX + @trackSizeOut, @game.world.height / 2
+    graphics.endFill()
+
+    pointX += @trackSizeOut + @shiftTracks
+    ###
 
 
   toString: ->
@@ -66,7 +111,7 @@ class TrackManagerFlat extends TrackManager
     return """
     #{super}
     TrackManagerFlat :
-      - Shift Tracks : #{@shiftTracks}
+      - Shift Out : #{@shiftOut}
     """
 
 module.exports = TrackManagerFlat
