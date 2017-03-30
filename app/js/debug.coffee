@@ -48,9 +48,12 @@ module.exports = (message, caller=null, type='log', priority=Infinity, theme=nul
   if theme? and theme in debugThemes.enums
     options = getOptionsFromTheme theme
 
+  if stuff? and stuff.length == 0
+    stuff = null
+
   # Do the output
   if options?
-    if stuff? and stuff.length > 0
+    if stuff?
       consoleFunction "%c " + message, options, stuff
     else
       consoleFunction "%c " + message, options

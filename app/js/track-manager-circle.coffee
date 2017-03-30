@@ -9,10 +9,10 @@ colors       = require './colors.coffee'
 config       = require './config.coffee'
 
 class TrackManagerCircle extends TrackManager
-  constructor: (game, nbTracks, trackSize, shiftCenter=0) ->
+  constructor: (game, nbTracks, trackSizeOut, trackSizeCenter, shiftCenter=0) ->
     debug 'Constructor...', @, 'info', 30, debugThemes.Tracks
 
-    super(game, nbTracks, trackSize, shiftCenter)
+    super(game, nbTracks, trackSizeOut, trackSizeCenter, shiftCenter)
 
     @game = game
     @graphics = @game.add.graphics @game.world.centerX, @game.world.centerY
