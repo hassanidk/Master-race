@@ -1,12 +1,14 @@
 Phaser = require 'Phaser'
 assert = require 'assert'
 
-Track        = require './track.coffee'
-TrackManager = require './track-manager.coffee'
-debug  = require './debug.coffee'
-debugThemes = require './debug-themes.coffee'
-colors       = require './colors.coffee'
-config       = require './config.coffee'
+Track        = require '../tracks/track.coffee'
+TrackManager = require '../tracks/track-manager.coffee'
+
+config      = require '../config/config.coffee'
+
+colors      = require '../utils/colors.coffee'
+debug       = require '../utils/debug.coffee'
+debugThemes = require '../utils/debug-themes.coffee'
 
 class Player
   @SPEED_MIN = 0

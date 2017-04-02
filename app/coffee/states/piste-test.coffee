@@ -1,16 +1,19 @@
 Phaser = require 'Phaser'
 
-Square = require './square.coffee'
-Polygon = require './polygon.coffee'
-Coordinates = require './coordinates.coffee'
-Player = require './player.coffee'
-TrackManager = require './track-manager.coffee'
-TrackManagerFlat = require './track-manager-flat.coffee'
-TrackManagerCircle = require './track-manager-circle.coffee'
+Square      = require '../utils/geometry/square.coffee'
+Polygon     = require '../utils/geometry/polygon.coffee'
+Coordinates = require '../utils/coordinates.coffee'
 
-config = require './config.coffee'
-debug  = require './debug.coffee'
-debugThemes = require './debug-themes.coffee'
+Player = require '../player/player.coffee'
+
+TrackManager       = require '../tracks/track-manager.coffee'
+TrackManagerFlat   = require '../tracks/track-manager-flat.coffee'
+TrackManagerCircle = require '../tracks/track-manager-circle.coffee'
+
+config      = require '../config/config.coffee'
+
+debug       = require '../utils/debug.coffee'
+debugThemes = require '../utils/debug-themes.coffee'
 
 class PistePhaser extends Phaser.State
   constructor: -> super
@@ -27,8 +30,9 @@ class PistePhaser extends Phaser.State
     @decalageBottom = 100
     @size = 150
 
-    @trackManager = new TrackManagerFlat @game, 5, 150, 150, 20, 20
-    # trackManager = new TrackManagerCircle(@game, 5, 150)
+    # @trackManager = new TrackManagerFlat @game, 5, 150, 150, 20, 20
+    @trackManager = new TrackManagerFlat @game, 5, 150, 1, 0, 35
+    # @trackManager = new TrackManagerCircle(@game, 5, 150)
 
     square = new Square(new Coordinates(25, 25), new Coordinates(50, 50))
     # console.log square.toString()
@@ -36,7 +40,7 @@ class PistePhaser extends Phaser.State
     polygon = new Polygon(square.getTopLeft(), square.getBottomLeft())
     # console.log polygon.toString()
 
-    @player = new Player(@game, @game.world.centerX, @game.world.height - 70, 'player', 20)
+    # @player = new Player(@game, @game.world.centerX, @game.world.height - 70, 'player', 20)
 
   update: ->
     if @input.activePointer.justPressed()

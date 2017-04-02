@@ -3,10 +3,12 @@ assert = require 'assert'
 
 Track        = require './track.coffee'
 TrackManager = require './track-manager.coffee'
-debug  = require './debug.coffee'
-debugThemes = require './debug-themes.coffee'
-colors       = require './colors.coffee'
-config       = require './config.coffee'
+
+config      = require '../config/config.coffee'
+
+colors      = require '../utils/colors.coffee'
+debug       = require '../utils/debug.coffee'
+debugThemes = require '../utils/debug-themes.coffee'
 
 class TrackManagerCircle extends TrackManager
   constructor: (game, nbTracks, trackSizeOut, trackSizeCenter, shiftCenter=0) ->

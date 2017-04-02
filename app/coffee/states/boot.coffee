@@ -1,8 +1,9 @@
 Phaser = require 'Phaser'
 
-config = require './config.coffee'
-debug  = require './debug.coffee'
-debugThemes = require './debug-themes.coffee'
+config      = require '../config/config.coffee'
+
+debug       = require '../utils/debug.coffee'
+debugThemes = require '../utils/debug-themes.coffee'
 
 class Boot extends Phaser.State
   constructor: ->

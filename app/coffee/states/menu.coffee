@@ -1,10 +1,11 @@
 Phaser = require 'Phaser'
 
-TrackManager = require './track-manager.coffee'
+TrackManager = require '../tracks/track-manager.coffee'
 
-config = require './config.coffee'
-debug  = require './debug.coffee'
-debugThemes = require './debug-themes.coffee'
+config      = require '../config/config.coffee'
+
+debug       = require '../utils/debug.coffee'
+debugThemes = require '../utils/debug-themes.coffee'
 
 class Menu extends Phaser.State
   constructor: ->
