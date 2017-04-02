@@ -21,6 +21,7 @@ class PistePhaser extends Phaser.State
   preload: ->
     @game.load.spritesheet 'dude', 'assets/img/dude.png'
     @game.load.spritesheet 'player', 'assets/img/player.png', 108, 140
+    @game.load.image 'coin', 'assets/img/coin.png'
     @game.load.image 'bg', 'assets/img/game-background-960.jpg'
 
   create: ->
@@ -40,7 +41,7 @@ class PistePhaser extends Phaser.State
     polygon = new Polygon(square.getTopLeft(), square.getBottomLeft())
     # console.log polygon.toString()
 
-    # @player = new Player(@game, @game.world.centerX, @game.world.height - 70, 'player', 20)
+    @player = new Player(@game, null, 'player', 20)
 
   update: ->
     if @input.activePointer.justPressed()
