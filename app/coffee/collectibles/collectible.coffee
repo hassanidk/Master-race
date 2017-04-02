@@ -7,11 +7,21 @@ debug       = require '../utils/debug.coffee'
 debugThemes = require '../utils/debug-themes.coffee'
 
 class Collectible
-  constructor: (game, sprite) ->
+  constructor: (game, x, y, sprite) ->
     console.log instanceof sprite
 
     @game = game
+    @x = x
+    @y = y
     @sprite = sprite
+
+    # TODO
+    @sprite.checkWorldBounds = true;
+    @sprite.events.onOutOfBounds
+
+  getBottomBorderHeight: ->
+    # TODO
+    undefined
 
   destroy: ->
     if @sprite?

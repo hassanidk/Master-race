@@ -14,4 +14,6 @@ class CollectibleSpawner
   constructor: (game) ->
     @game = game
 
+  
+
 module.exports = CollectibleSpawner
