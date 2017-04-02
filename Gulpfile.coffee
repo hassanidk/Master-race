@@ -29,11 +29,11 @@ paths =
   assets: './app/assets/**/*.*'
   app: './app'
   dist: './dist'
-  js: '/js'
+  coffeeDir: '/coffee'
   css: './app/css/main.styl'
-  mainCoffeeFile: './app/js/app.coffee'
+  mainCoffeeFile: './app/coffee/app.coffee'
   html: './app/index.html'
-  coffeeFiles: './app/js/*.coffee'
+  coffeeFiles: './app/coffee/*.coffee'
 htmlOutput = 'index.html'
 
 ### Permet de vérifier le code .coffee ###
@@ -54,7 +54,7 @@ gulp.task 'compile-css', ->
   gulp.src(paths.css).pipe(stylus(compress: true)).pipe gulp.dest(paths.dist)
 
 ### Compile le code .coffee en .js (compression) ###
-gulp.task 'compile-js', ->
+gulp.task 'compile-coffee', ->
 
   # browserify rend un code qui n'est pas "debuggable"
   if process.env.NODE_ENV == 'release'
@@ -71,7 +71,7 @@ gulp.task 'build', [
   'clean'
   'copy-assets'
   'compile-css'
-  'compile-js'
+  'compile-coffee'
   'copy-html'
 ]
 

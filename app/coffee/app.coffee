@@ -7,15 +7,15 @@ app.coffee
 Phaser   = require 'Phaser'
 
 # States
-Boot     = require './boot.coffee'
-Preload  = require './preload.coffee'
-Menu     = require './menu.coffee'
-Game     = require './game.coffee'
-Piste    = require './piste-test.coffee'
+Boot     = require './states/boot.coffee'
+Preload  = require './states/preload.coffee'
+Menu     = require './states/menu.coffee'
+Game     = require './states/game.coffee'
+Piste    = require './states/piste-test.coffee'
 
-config = require './config.coffee'
-debug  = require './debug.coffee'
-debugThemes = require './debug-themes.coffee'
+config      = require './config/config.coffee'
+debug       = require './utils/debug.coffee'
+debugThemes = require './utils/debug-themes.coffee'
 
 game = new Phaser.Game config.width, config.height, Phaser.AUTO, 'game-stage'
 

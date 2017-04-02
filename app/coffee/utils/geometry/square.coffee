@@ -1,5 +1,6 @@
-Coordinates = require './coordinates.coffee'
 Polygon = require './polygon.coffee'
+
+Coordinates = require '../coordinates.coffee'
 
 assert = require 'assert'
 
