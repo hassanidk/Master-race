@@ -41,7 +41,7 @@ class PistePhaser extends Phaser.State
     polygon = new Polygon(square.getTopLeft(), square.getBottomLeft())
     # console.log polygon.toString()
 
-    @player = new Player(@game, null, 'player', 20)
+    @player = new Player(@game, @trackManager.tracks[2], 'player', 20)
 
   update: ->
     if @input.activePointer.justPressed()

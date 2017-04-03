@@ -11,12 +11,13 @@ debugThemes = require '../utils/debug-themes.coffee'
 Polygon     = require '../utils/geometry/polygon.coffee'
 
 class Track
-  constructor: (game, num, topLeft, bottomLeft, topRight, bottomRight) ->
+  constructor: (game, trackManager, num, topLeft, bottomLeft, topRight, bottomRight) ->
     debug 'Constructor...', @, 'info', 30, debugThemes.Tracks
 
     @game = game
     @num = num
     @shape = new Polygon topLeft.clone(), bottomLeft.clone(), topRight.clone(), bottomRight.clone()
+    @trackManager = trackManager
 
     ###
 
@@ -71,6 +72,24 @@ class Track
     @sprite.animations.play 'runRight'
 
 
+  getPlayerPosition: ->
+    return new Coordinates.GetMiddle @getBottomLeft(), @getBottomRight()
+
+
+  getPlayerRotation: ->
+    return 0
+
+    # TODO trackManagerCircle
+    throw "Unhandled Exception : Track Manager Circle"
+
+  destroy: ->
+    if @graphics?
+      @graphics.destroy()
+
+    if @sprite?
+      @sprite.destroy()
+
+
   getTopLeft: ->
     return @shape.getPoint 0
 
@@ -86,13 +105,6 @@ class Track
   getBottomRight: ->
     return @shape.getPoint 3
 
-
-  destroy: ->
-    if @graphics?
-      @graphics.destroy()
-
-    if @sprite?
-      @sprite.destroy()
 
   toString: ->
     debug 'toString...', @, 'info', 30, debugThemes.Tracks

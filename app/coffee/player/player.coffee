@@ -3,6 +3,8 @@ assert = require 'assert'
 
 Track        = require '../tracks/track.coffee'
 TrackManager = require '../tracks/track-manager.coffee'
+TrackManagerFlat = require '../tracks/track-manager-flat.coffee'
+TrackManagerCircle = require '../tracks/track-manager-circle.coffee'
 
 config       = require '../config/config.coffee'
 
@@ -25,14 +27,22 @@ class Player
     assert speed >= Player.SPEED_MIN, "Speed is too low"
     assert speed <= Player.SPEED_MAX, "Speed is too high"
 
-    # TODO ASSERT TRACK
+    assert track instanceof Track, "No track"
 
     @game = game
-
     @track = track
-
     @textureName = textureName
     @speed = speed
+
+    @sprite = @game.add.sprite @game.world.centerX, @game.world.centerY, textureName
+    @sprite.anchor.setTo 0.5, 1
+    @sprite.animations.add 'runRight', [0, 1, 2, 3, 4, 5, 6, 7], speed, true
+    @sprite.animations.add 'runLeft', [8, 9, 10, 11, 12, 13, 14, 15], speed, true
+
+    @setPositionFromTrack()
+    @setRotationFromTrack()
+
+    @sprite.animations.play 'runRight'
 
     @leftKey = @game.input.keyboard.addKey configPlayer.leftKey
     @leftKey.onDown.add @moveLeft, @
@@ -40,29 +50,42 @@ class Player
     @rightKey = @game.input.keyboard.addKey configPlayer.rightKey
     @rightKey.onDown.add @moveRight, @
 
-    ###
-    @sprite = @game.add.sprite x, y, textureName
-    @sprite.anchor.setTo 0.5, 0.5
-    @sprite.animations.add 'runRight', [0, 1, 2, 3, 4, 5, 6, 7], speed, true
-    @sprite.animations.add 'runLeft', [8, 9, 10, 11, 12, 13, 14, 15], speed, true
+  setPositionFromTrack: () ->
+    @coords = @track.getPlayerPosition()
+    @sprite.x = @coords.x
+    @sprite.y = @coords.y
 
-    @sprite.animations.play 'runRight'
-    ###
 
+  setRotationFromTrack: () ->
+    @sprite.angle = @track.getPlayerRotation()
 
   moveLeft: ->
     debug 'moveLeft...', @, 'info', 30, debugThemes.Player
-    undefined
+    @move -1
 
 
   moveRight: ->
     debug 'moveRight...', @, 'info', 30, debugThemes.Player
-    undefined
+    @move 1
+
+
+  move: (step) ->
+    debug 'move...', @, 'info', 30, debugThemes.Player
+
+    numNewTrack = @track.num + step
+    if @track.trackManager instanceof TrackManagerFlat
+      if numNewTrack < 0 or numNewTrack >= @track.trackManager.nb
+        return
+
+    @track = @track.trackManager.tracks[numNewTrack]
+    @coords = @track.getPlayerPosition()
+    @sprite.x = @coords.x
+    @sprite.y = @coords.y
 
 
   getBottomBorderHeight: ->
-    # TODO
-    undefined
+    # TODO manage sprite anchor
+    return @sprite.y
 
 
   toString: ->
