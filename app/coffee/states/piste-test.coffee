@@ -10,6 +10,8 @@ TrackManager       = require '../tracks/track-manager.coffee'
 TrackManagerFlat   = require '../tracks/track-manager-flat.coffee'
 TrackManagerCircle = require '../tracks/track-manager-circle.coffee'
 
+Coin = require '../collectibles-spawner/collectibles/coin.coffee'
+
 config      = require '../config/config.coffee'
 
 debug       = require '../utils/debug.coffee'
@@ -32,27 +34,29 @@ class PistePhaser extends Phaser.State
     @size = 150
 
     # @trackManager = new TrackManagerFlat @game, 5, 150, 150, 20, 20
-    @trackManager = new TrackManagerFlat @game, 5, 150, 1, 0, 35
+    @trackManager = new TrackManagerFlat @game, 7, 120, 1, 0, 35
     # @trackManager = new TrackManagerCircle(@game, 5, 150)
 
-    square = new Square(new Coordinates(25, 25), new Coordinates(50, 50))
-    # console.log square.toString()
+    @myCoin = new Coin @game, @trackManager.tracks[2]
+    @trackManager.tracks[2].collectibleSpawner.collectibles.push @myCoin
 
-    polygon = new Polygon(square.getTopLeft(), square.getBottomLeft())
-    # console.log polygon.toString()
+    @player = new Player @game, @trackManager.tracks[2], 'player', 20
 
-    @player = new Player(@game, @trackManager.tracks[2], 'player', 20)
 
   update: ->
+    @trackManager.update()
+
     if @input.activePointer.justPressed()
       @trackManager.destroy()
       @createRandomTrackManagerFlat()
+
 
   createRandomTrackManager: ->
     if Math.random() > 0.5
       @createRandomTrackManagerFlat()
     else
       @createRandomTrackManagerCircle()
+
 
   createRandomTrackManagerFlat: ->
     nbTracks = Math.floor(Math.random() * 11) + 1

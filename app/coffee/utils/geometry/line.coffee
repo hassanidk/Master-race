@@ -25,3 +25,5 @@ class Line extends Polygon
       - Point B :
       #{@getPointB().toString()}
     """
+
+module.exports = Line

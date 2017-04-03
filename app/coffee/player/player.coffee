@@ -50,6 +50,7 @@ class Player
     @rightKey = @game.input.keyboard.addKey configPlayer.rightKey
     @rightKey.onDown.add @moveRight, @
 
+
   setPositionFromTrack: () ->
     @coords = @track.getPlayerPosition()
     @sprite.x = @coords.x
@@ -58,6 +59,7 @@ class Player
 
   setRotationFromTrack: () ->
     @sprite.angle = @track.getPlayerRotation()
+
 
   moveLeft: ->
     debug 'moveLeft...', @, 'info', 30, debugThemes.Player
@@ -73,6 +75,8 @@ class Player
     debug 'move...', @, 'info', 30, debugThemes.Player
 
     numNewTrack = @track.num + step
+
+    # Check limits of TrackManagerFlat
     if @track.trackManager instanceof TrackManagerFlat
       if numNewTrack < 0 or numNewTrack >= @track.trackManager.nb
         return

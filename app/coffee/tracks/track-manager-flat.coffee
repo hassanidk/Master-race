@@ -16,10 +16,10 @@ class TrackManagerFlat extends TrackManager
   @MIN_SHIFT_OUT = 0
   @MAX_SHIFT_OUT = Infinity
 
-  constructor: (game, nbTracks, trackSizeOut, trackSizeCenter, shiftCenter=0, shiftOut=20, outHeight=null, centerHeight=null) ->
+  constructor: (game, nb, sizeOut, sizeCenter, shiftCenter=0, shiftOut=20, outHeight=null, centerHeight=null) ->
     debug 'Constructor...', @, 'info', 30, debugThemes.Tracks
 
-    super game, nbTracks, trackSizeOut, trackSizeCenter, shiftCenter
+    super game, nb, sizeOut, sizeCenter, shiftCenter
 
     assert shiftOut >= TrackManagerFlat.MIN_SHIFT_OUT, "shiftTracks is too low"
     assert shiftOut <= TrackManagerFlat.MAX_SHIFT_OUT, "shiftTracks is too high"
@@ -39,26 +39,26 @@ class TrackManagerFlat extends TrackManager
 
   createTracks: () ->
     # Top Left corner of track
-    startCenterX = @game.world.centerX - @nbTracksHalf * (@trackSizeCenter + @shiftCenter) + @shiftCenter / 2
+    startCenterX = @game.world.centerX - @nbHalf * (@sizeCenter + @shiftCenter) + @shiftCenter / 2
     startCenterY = @centerHeight
     startCenter = new Coordinates startCenterX, startCenterY
 
     # Bottom Left corner of track
-    startOutX = @game.world.centerX - @nbTracksHalf * (@trackSizeOut + @shiftOut) + @shiftOut / 2
+    startOutX = @game.world.centerX - @nbHalf * (@sizeOut + @shiftOut) + @shiftOut / 2
     startOutY = @outHeight
     startOut = new Coordinates startOutX, startOutY
 
     # Top Right corner of track
-    endCenter = new Coordinates startCenter.x + @trackSizeCenter, startCenter.y
+    endCenter = new Coordinates startCenter.x + @sizeCenter, startCenter.y
 
     # Bottom Right corner of track
-    endOut = new Coordinates startOut.x + @trackSizeOut, startOut.y
+    endOut = new Coordinates startOut.x + @sizeOut, startOut.y
 
     # Total sizes of tracks (size + shift)
-    totalSizeCenter = @trackSizeCenter + @shiftCenter
-    totalSizeOut = @trackSizeOut + @shiftOut
+    totalSizeCenter = @sizeCenter + @shiftCenter
+    totalSizeOut = @sizeOut + @shiftOut
 
-    for i in [0..@nbTracks - 1] by 1
+    for i in [0..@nb - 1] by 1
       @createTrack i, startCenter, startOut, endCenter, endOut
 
       startCenter.x += totalSizeCenter
@@ -100,8 +100,8 @@ class TrackManagerFlat extends TrackManager
 
     graphics.beginFill color
     graphics.lineTo diffLeft.x, diffLeft.y
-    graphics.lineTo diffLeft.x + @trackSizeOut, diffLeft.y
-    graphics.lineTo @trackSizeCenter, 0
+    graphics.lineTo diffLeft.x + @sizeOut, diffLeft.y
+    graphics.lineTo @sizeCenter, 0
     graphics.endFill()
 
     @tracks[num] = new Track @game, @, num, startCenter, startOut, endCenter, endOut
