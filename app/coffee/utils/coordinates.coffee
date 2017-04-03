@@ -7,6 +7,10 @@ class Coordinates
     assert coordsA instanceof Coordinates, "CoordsA is not coordinates"
     assert coordsB instanceof Coordinates, "CoordsB is not coordinates"
 
+  @GetMiddle: (coordsA, coordsB) ->
+    Coordinates.Assert2Coords coordsA, coordsB
+    return new Coordinates (coordsA.x + coordsB.x) / 2, (coordsA.y + coordsB.y) / 2
+
 
   @Add: (coordsA, coordsB) ->
     Coordinates.Assert2Coords coordsA, coordsB

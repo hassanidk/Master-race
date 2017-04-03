@@ -104,7 +104,7 @@ class TrackManagerFlat extends TrackManager
     graphics.lineTo @trackSizeCenter, 0
     graphics.endFill()
 
-    @tracks[num] = new Track @game, num, startCenter, startOut, endCenter, endOut
+    @tracks[num] = new Track @game, @, num, startCenter, startOut, endCenter, endOut
     @tracks[num].addGraphics graphics
     @tracks[num].addSprite 'bg'
     # @tracks[num].addAnimatedSprite 'player'
