@@ -1,5 +1,7 @@
 assert = require 'assert'
 
+clamp = require './math/clamp.coffee'
+
 class Coordinates
 
 
@@ -7,9 +9,15 @@ class Coordinates
     assert coordsA instanceof Coordinates, "CoordsA is not coordinates"
     assert coordsB instanceof Coordinates, "CoordsB is not coordinates"
 
+
   @GetMiddle: (coordsA, coordsB) ->
     Coordinates.Assert2Coords coordsA, coordsB
     return new Coordinates (coordsA.x + coordsB.x) / 2, (coordsA.y + coordsB.y) / 2
+
+
+  @GetFactor: (coordsA, coordsB) ->
+    Coordinates.Assert2Coords coordsA, coordsB
+    return (coordsA.x / coordsB.x + coordsA.y / coordsB.y) / 2
 
 
   @Add: (coordsA, coordsB) ->

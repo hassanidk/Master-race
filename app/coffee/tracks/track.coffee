@@ -3,37 +3,30 @@ assert = require 'assert'
 
 Coordinates = require '../utils/coordinates.coffee'
 
-config      = require '../config/config.coffee'
-
 debug       = require '../utils/debug.coffee'
 debugThemes = require '../utils/debug-themes.coffee'
 
+CollectibleSpawner = require '../collectibles-spawner/collectible-spawner.coffee'
+SpawnModes = require '../collectibles-spawner/spawn-modes.coffee'
+
 Polygon     = require '../utils/geometry/polygon.coffee'
+Line = require '../utils/geometry/line.coffee'
 
 class Track
   constructor: (game, trackManager, num, topLeft, bottomLeft, topRight, bottomRight) ->
     debug 'Constructor...', @, 'info', 30, debugThemes.Tracks
 
     @game = game
+    @trackManager = trackManager
     @num = num
     @shape = new Polygon topLeft.clone(), bottomLeft.clone(), topRight.clone(), bottomRight.clone()
-    @trackManager = trackManager
 
-    ###
+    topMiddle = Coordinates.GetMiddle topLeft, topRight
+    bottomMiddle = Coordinates.GetMiddle bottomLeft, bottomRight
+    @midLine = new Line topMiddle, bottomMiddle
+    @collectibleSpawner = new CollectibleSpawner @game, SpawnModes.friendly
 
-    Je ne pense pas qu'il y ait besoin de faire une classe qui extends Phaser.sprite
 
-    Deux manières de faire :
-      - Héritage : On étend le sprite
-      - En variable (privée de préference)
-
-    J'opterai pour la 2°
-
-    # TODO
-    super game, x, y, texture, frame
-
-    game.add.existing @
-    ###
 
   addGraphics: (graphics) ->
     if @graphics?
@@ -54,6 +47,7 @@ class Track
     @sprite.anchor.setTo 0.5, 0.5
     @sprite.mask = @graphics
 
+
   addAnimatedSprite: (spriteKey) ->
     assert @graphics?, "Track: No graphics for animated sprite"
 
@@ -72,15 +66,9 @@ class Track
     @sprite.animations.play 'runRight'
 
 
-  getPlayerPosition: ->
-    return new Coordinates.GetMiddle @getBottomLeft(), @getBottomRight()
+  update: ->
+    @collectibleSpawner.update()
 
-
-  getPlayerRotation: ->
-    return 0
-
-    # TODO trackManagerCircle
-    throw "Unhandled Exception : Track Manager Circle"
 
   destroy: ->
     if @graphics?
@@ -88,6 +76,25 @@ class Track
 
     if @sprite?
       @sprite.destroy()
+
+
+  getCollectibleStart: ->
+    return @midLine.getPointA()
+
+
+  getCollectibleEnd: ->
+    return @midLine.getPointB()
+
+
+  getPlayerPosition: ->
+    return @midLine.getPointB()
+
+
+  getPlayerRotation: ->
+    return 0
+
+    # TODO trackManagerCircle
+    throw "Unhandled Exception : Track Manager Circle"
 
 
   getTopLeft: ->

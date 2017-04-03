@@ -6,6 +6,7 @@ PRIORITY = Infinity
 
 WHITELIST = []
 
+
 # Get console function
 getConsoleFunction = (type) ->
   switch type
@@ -16,14 +17,17 @@ getConsoleFunction = (type) ->
     when 'error' then return console.error
     else return console.log
 
+
 # Return CSS properties associated to a theme
 getOptionsFromTheme = (theme) ->
   switch theme
     when debugThemes.Phaser then return 'color:white; background:rgba(225, 0, 0, 0.85); display:block;'
     when debugThemes.Player then return 'color:white; background:rgba(0, 0, 225, 0.85); display: block;'
+    when debugThemes.Collectibles then return 'color:white; background:rgba(92, 11, 232, 0.85); display: block;'
     when debugThemes.Tracks then return 'color:white; background:rgba(0, 245, 0, 0.9); display:block'
     when debugThemes.Other then return 'color:white; background:rgba(125, 125, 125, 0.85); display: block;'
     else return null
+
 
 module.exports = (message, caller=null, type='log', priority=Infinity, theme=null, stuff...) ->
   # No Debug or no message
