@@ -33,23 +33,24 @@ class PistePhaser extends Phaser.State
     @decalageBottom = 100
     @size = 150
 
+
     # @trackManager = new TrackManagerFlat @game, 5, 150, 150, 20, 20
-    @trackManager = new TrackManagerFlat @game, 7, 120, 1, 0, 35
+    @trackManager = new TrackManagerFlat @game, 5, 120, 1, 0, 35
     # @trackManager = new TrackManagerCircle(@game, 5, 150)
 
     @myCoin = new Coin @game, @trackManager.tracks[2]
-    @trackManager.tracks[2].collectibleSpawner.collectibles.push @myCoin
+    @trackManager.collectibleSpawnerManager.spawners[2].collectibles.push @myCoin
 
     @player = new Player @game, @trackManager.tracks[2], 'player', 20
 
 
   update: ->
     @trackManager.update()
+    @player.collisionManager.checkCollision()
 
     if @input.activePointer.justPressed()
       @trackManager.destroy()
       @createRandomTrackManagerFlat()
-
 
   createRandomTrackManager: ->
     if Math.random() > 0.5

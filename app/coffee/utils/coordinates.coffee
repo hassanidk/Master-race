@@ -1,6 +1,6 @@
-assert = require 'assert'
+assert = require './assert.coffee'
 
-clamp = require './math/clamp.coffee'
+lerp = require './math/lerp.coffee'
 
 class Coordinates
 
@@ -38,6 +38,13 @@ class Coordinates
   @Divide: (coordsA, coordsB) ->
     Coordinates.Assert2Coords coordsA, coordsB
     return new Coordinates coordsA.x / coordsB.x, coordsA.y / coordsB.y
+
+
+  @Lerp: (coordsA, coordsB, value) ->
+    Coordinates.Assert2Coords coordsA, coordsB
+    x = lerp coordsA.x, coordsB.x, value
+    y = lerp coordsA.y, coordsB.y, value
+    return new Coordinates x, y
 
 
   constructor: (x, y) ->

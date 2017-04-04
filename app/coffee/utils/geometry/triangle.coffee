@@ -1,3 +1,5 @@
+assert = require '../assert.coffee'
+
 Polygon = require './polygon.coffee'
 
 class Triangle extends Polygon

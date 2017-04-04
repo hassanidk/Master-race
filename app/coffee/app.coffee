@@ -4,6 +4,7 @@ app.coffee
 
 ###
 
+
 Phaser   = require 'Phaser'
 
 # States

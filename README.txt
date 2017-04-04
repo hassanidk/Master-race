@@ -22,5 +22,11 @@ Pour diverses informations relatives au projets, voir le fichier package.json
  // Build et serveur
  npm run all
 
+ Pour modifier les modes (développement, release...) : 
+
+  - Modifier le fichier app/coffee/config.env.coffee
+
+  - avec les types définis dans le fichier app/coffee/config.environment-vars.coffee
+
 ----------------------------
 

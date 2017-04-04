@@ -1,11 +1,13 @@
 debugThemes = require './debug-themes.coffee'
 
-DEBUG = true
+environmentVars = require '../config/environment-vars.coffee'
+env = require '../config/env.coffee'
+
+DEBUG = env != environmentVars.release
 
 PRIORITY = Infinity
 
 WHITELIST = []
-
 
 # Get console function
 getConsoleFunction = (type) ->

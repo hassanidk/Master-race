@@ -1,15 +1,8 @@
 Coordinates = require '../coordinates.coffee'
 
-assert = require 'assert'
+assert = require '../assert.coffee'
 
 class Polygon
-
-  @Lerp: (polyA, polyB) ->
-    assert polyA instanceof Polygon, "PolyA is not a Polygon"
-    assert polyB instanceof Polygon, "PolyB is not a Polygon"
-
-    
-
 
   constructor: (coordinates...) ->
     for i in [0..coordinates.length - 1] by 1
@@ -19,7 +12,6 @@ class Polygon
 
 
   getPoint: (i) ->
-    assert i >= 0 and i <  @points.length, "Polygon: Point n°" + i + "is out of bounds"
     return @points[i]
 
 

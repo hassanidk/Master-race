@@ -1,13 +1,13 @@
 Phaser = require 'Phaser'
-assert = require 'assert'
+assert = require '../utils/assert.coffee'
 
-Track  = require './track.coffee'
+CollectibleSpawnerManager = require '../collectibles-spawner/collectible-spawner-manager.coffee'
+SpawnModes = require '../collectibles-spawner/spawn-modes.coffee'
 
-config      = require '../config/config.coffee'
-
-colors      = require '../utils/colors.coffee'
 debug       = require '../utils/debug.coffee'
 debugThemes = require '../utils/debug-themes.coffee'
+
+Track  = require './track.coffee'
 
 class TrackManager
   # Static vars
@@ -48,10 +48,8 @@ class TrackManager
     # Tracks will be stored in this array
     @tracks = new Array(@nbPistes)
 
-
-  update: () ->
-    for track in @tracks
-      track.update()
+    # Collectible Spawner Manager
+    @collectibleSpawnerManager = new CollectibleSpawnerManager @game, @, SpawnModes.friendly
 
 
   destroy: ->
@@ -59,7 +57,12 @@ class TrackManager
       track.destroy()
 
     @tracksGroup.destroy()
+    @tracksGroup = null
+    @tracks = null
 
+
+  update: ->
+    @collectibleSpawnerManager.update()
 
   toString: ->
     debug 'ToString...', @, 'info', 30, debugThemes.Tracks

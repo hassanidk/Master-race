@@ -1,5 +1,5 @@
 Phaser = require 'Phaser'
-assert = require 'assert'
+assert = require '../utils/assert.coffee'
 
 Coordinates = require '../utils/coordinates.coffee'
 
