@@ -9,8 +9,11 @@ buffer     = require('vinyl-buffer')
 vinyl      = require('vinyl-source-stream')
 fs         = require('fs')
 
+environmentVars = require './app/coffee/config/environment-vars.coffee'
+env = require './app/coffee/config/env.coffee'
+
 # This is a development build
-process.env.NODE_ENV = 'development'
+process.env.NODE_ENV = env
 
 ### Fonction pour supprimer le repertoire de build sans warnings ###
 deleteFolderRecursive = (path) ->
@@ -57,7 +60,7 @@ gulp.task 'compile-css', ->
 gulp.task 'compile-coffee', ->
 
   # browserify rend un code qui n'est pas "debuggable"
-  if process.env.NODE_ENV == 'release'
+  if process.env.NODE_ENV == environmentVars.release
     browserify(paths.mainCoffeeFile, debug: false).transform(coffeeify).bundle().pipe(vinyl('main.js')).pipe(buffer()).pipe(uglify(compress: true)).pipe gulp.dest(paths.dist)
   else
     browserify(paths.mainCoffeeFile, debug: true).transform(coffeeify).bundle().pipe(vinyl('main.js')).pipe gulp.dest(paths.dist)

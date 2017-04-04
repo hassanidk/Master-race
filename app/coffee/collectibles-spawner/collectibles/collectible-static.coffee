@@ -1,5 +1,5 @@
 Phaser = require 'Phaser'
-assert = require 'assert'
+assert = require '../../utils/assert.coffee'
 
 Collectible = require './collectible.coffee'
 
@@ -15,7 +15,7 @@ class CollectibleStatic extends Collectible
     startCoords = track.getCollectibleStart()
     sprite = game.add.sprite startCoords.x, startCoords.y, spriteKey
     sprite.scale.setTo 0.1, 0.1
-    sprite.anchor.setTo 0.5, 0.5
+    sprite.anchor.setTo 0.5, 0
     super game, track, sprite
 
 

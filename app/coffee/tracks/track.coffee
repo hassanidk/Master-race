@@ -1,16 +1,15 @@
 Phaser = require 'Phaser'
-assert = require 'assert'
+assert = require '../utils/assert.coffee'
 
 Coordinates = require '../utils/coordinates.coffee'
 
 debug       = require '../utils/debug.coffee'
 debugThemes = require '../utils/debug-themes.coffee'
 
-CollectibleSpawner = require '../collectibles-spawner/collectible-spawner.coffee'
-SpawnModes = require '../collectibles-spawner/spawn-modes.coffee'
-
 Polygon     = require '../utils/geometry/polygon.coffee'
 Line = require '../utils/geometry/line.coffee'
+
+clamp = require '../utils/math/clamp.coffee'
 
 class Track
   constructor: (game, trackManager, num, topLeft, bottomLeft, topRight, bottomRight) ->
@@ -21,11 +20,10 @@ class Track
     @num = num
     @shape = new Polygon topLeft.clone(), bottomLeft.clone(), topRight.clone(), bottomRight.clone()
 
+    # Creation of the midLine
     topMiddle = Coordinates.GetMiddle topLeft, topRight
     bottomMiddle = Coordinates.GetMiddle bottomLeft, bottomRight
     @midLine = new Line topMiddle, bottomMiddle
-    @collectibleSpawner = new CollectibleSpawner @game, SpawnModes.friendly
-
 
 
   addGraphics: (graphics) ->
@@ -33,6 +31,10 @@ class Track
       @graphics.destroy()
 
     @graphics = graphics
+
+
+  getCollectibleSpawner: () ->
+    return @trackManager.collectibleSpawnerManager.spawners[@num]
 
 
   addSprite: (spriteKey) ->
@@ -66,10 +68,6 @@ class Track
     @sprite.animations.play 'runRight'
 
 
-  update: ->
-    @collectibleSpawner.update()
-
-
   destroy: ->
     if @graphics?
       @graphics.destroy()
@@ -78,16 +76,20 @@ class Track
       @sprite.destroy()
 
 
+  getCoordsInMidLine: (value) ->
+    return Coordinates.Lerp @midLine.getStart(), @midLine.getEnd(), value
+
+
   getCollectibleStart: ->
-    return @midLine.getPointA()
+    return @midLine.getStart()
 
 
   getCollectibleEnd: ->
-    return @midLine.getPointB()
+    return @midLine.getEnd()
 
 
   getPlayerPosition: ->
-    return @midLine.getPointB()
+    return @midLine.getEnd()
 
 
   getPlayerRotation: ->

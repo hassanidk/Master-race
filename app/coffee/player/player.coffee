@@ -1,10 +1,12 @@
 Phaser = require 'Phaser'
-assert = require 'assert'
+assert = require '../utils/assert.coffee'
 
 Track        = require '../tracks/track.coffee'
 TrackManager = require '../tracks/track-manager.coffee'
 TrackManagerFlat = require '../tracks/track-manager-flat.coffee'
 TrackManagerCircle = require '../tracks/track-manager-circle.coffee'
+
+CollisionManager = require '../collisions/collision-manager.coffee'
 
 config       = require '../config/config.coffee'
 
@@ -50,6 +52,7 @@ class Player
     @rightKey = @game.input.keyboard.addKey configPlayer.rightKey
     @rightKey.onDown.add @moveRight, @
 
+    @collisionManager = new CollisionManager @game, @
 
   setPositionFromTrack: () ->
     @coords = @track.getPlayerPosition()

@@ -2,7 +2,7 @@ Polygon = require './polygon.coffee'
 
 Coordinates = require '../coordinates.coffee'
 
-assert = require 'assert'
+assert = require '../assert.coffee'
 
 class Square extends Polygon
   constructor: (topLeft, bottomRight) ->

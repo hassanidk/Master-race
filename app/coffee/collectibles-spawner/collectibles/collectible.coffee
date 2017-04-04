@@ -1,5 +1,5 @@
 Phaser = require 'Phaser'
-assert = require 'assert'
+assert = require '../../utils/assert.coffee'
 
 Track = require '../../tracks/track.coffee'
 Coordinates = require '../../utils/coordinates.coffee'
@@ -13,11 +13,14 @@ class Collectible
   constructor: (game, track, sprite) ->
     debug 'Constructor...', @, 'info', 30, debugThemes.Collectibles
 
-    # assert track instanceof Track, 'Incorrect Track'
+    assert track instanceof Track, 'Incorrect Track'
 
     @game = game
     @track = track
     @sprite = sprite
+
+    # TODO
+    # @speed
 
     @isOut = false
 
@@ -35,8 +38,8 @@ class Collectible
 
     factor = Coordinates.GetFactor currentScale, @initialScale
 
-    @sprite.x += (@vector.x / 750) * factor
-    @sprite.y += (@vector.y / 750) * factor
+    @sprite.x += ((@vector.x / 750) * factor)
+    @sprite.y += ((@vector.y / 750) * factor)
 
     # Manage scale
     @sprite.scale.x *= 1.025

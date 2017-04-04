@@ -1,5 +1,5 @@
 Phaser = require 'Phaser'
-assert = require 'assert'
+assert = require '../utils/assert.coffee'
 
 config      = require '../config/config.coffee'
 
@@ -10,28 +10,25 @@ Collectible = require './collectibles/collectible.coffee'
 CollectibleAnimated = require './collectibles/collectible-animated.coffee'
 CollectibleStatic = require './collectibles/collectible-static.coffee'
 
-SpawnModes = require './spawn-modes.coffee'
-
 class CollectibleSpawner
-  @MIN_SPAWN_PROB = 0
-  @MAX_SPAWN_PROB = 1
 
-  constructor: (game, spawnMode) ->
+  constructor: (game, track) ->
     debug 'Constructor...', @, 'info', 30, debugThemes.Collectibles
 
-    # TODO
-    # assert spawnMode in SpawnModes, "Incorrect spawn mode"
-
     @game = game
-    @spawnMode = spawnMode
     @collectibles = new Array()
+
 
   update: () ->
     for collectible in @collectibles
       collectible.update()
 
-    # TODO
-    # If collectible.isOut
-    #     Alors detruit et arrange l'array
+      # if collectible.isOut
+      # DO
+
+
+  destroyCollectible: (collectible) ->
+
+
 
 module.exports = CollectibleSpawner
