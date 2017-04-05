@@ -31,31 +31,34 @@ class Player
 
     assert track instanceof Track, "No track"
 
+    # Args
     @game = game
     @track = track
     @textureName = textureName
     @speed = speed
 
+    # Sprite
     @sprite = @game.add.sprite @game.world.centerX, @game.world.centerY, textureName
-    @sprite.anchor.setTo 0.5, 1
+    @sprite.anchor.setTo 0.5, 0.75
     @sprite.animations.add 'runRight', [0, 1, 2, 3, 4, 5, 6, 7], speed, true
     @sprite.animations.add 'runLeft', [8, 9, 10, 11, 12, 13, 14, 15], speed, true
+    @sprite.animations.play 'runRight'
 
+    # Position and rotation
     @setPositionFromTrack()
     @setRotationFromTrack()
 
-    @sprite.animations.play 'runRight'
-
+    # Input
     @leftKey = @game.input.keyboard.addKey configPlayer.leftKey
     @leftKey.onDown.add @moveLeft, @
-
     @rightKey = @game.input.keyboard.addKey configPlayer.rightKey
     @rightKey.onDown.add @moveRight, @
 
+    # Collision Manager
     @collisionManager = new CollisionManager @game, @
 
   setPositionFromTrack: () ->
-    @coords = @track.getPlayerPosition()
+    @coords = @track.getCoordsInMidLine 0.9
     @sprite.x = @coords.x
     @sprite.y = @coords.y
 
@@ -63,6 +66,14 @@ class Player
   setRotationFromTrack: () ->
     @sprite.angle = @track.getPlayerRotation()
 
+
+  setScaleFromTrack: () ->
+    @sprite.scale.setTo 0.9, 0.9
+
+  updateProperties: () ->
+    @setPositionFromTrack()
+    @setRotationFromTrack()
+    @setScaleFromTrack()
 
   moveLeft: ->
     debug 'moveLeft...', @, 'info', 30, debugThemes.Player
@@ -85,9 +96,8 @@ class Player
         return
 
     @track = @track.trackManager.tracks[numNewTrack]
-    @coords = @track.getPlayerPosition()
-    @sprite.x = @coords.x
-    @sprite.y = @coords.y
+    @setPositionFromTrack()
+    @setRotationFromTrack()
 
 
   getBottomBorderHeight: ->
