@@ -22,7 +22,10 @@ class CollisionManager
       return false
 
     collectibleSpawner = @player.track.getCollectibleSpawner()
+    holeSpawner = @player.track.getHoleSpawner()
+
     nbCollectibles = collectibleSpawner.collectibles.length
+    nbHoles = holeSpawner.holes.length
     for i in [0..nbCollectibles - 1] by 1
       collectible = collectibleSpawner.collectibles[i]
 
@@ -35,6 +38,18 @@ class CollisionManager
       if cBottomY >= pNorthRangeY and cBottomY <= pSouthRangeY
         # TODO
         collectible.destroy()
+    for i in [0..nbHoles - 1] by 1
+      hole = holeSpawner.holes[i]
+
+      # p for Player
+      pBottomY = @player.getBottomBorderHeight()
+      pSouthRangeY = pBottomY
+      pNorthRangeY = pBottomY - CollisionManager.DEADLINE * 10
+
+      cBottomY = hole.getBottomBorderHeight()
+      if cBottomY >= pNorthRangeY and cBottomY <= pSouthRangeY
+        # TODO
+        hole.destroy()
 
 
 module.exports = CollisionManager
