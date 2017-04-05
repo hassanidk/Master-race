@@ -17,7 +17,7 @@ class TrackManager
   @MIN_SHIFT_CENTER = 0
   @MAX_SHIFT_CENTER = Infinity
 
-  constructor: (game, nb, sizeOut, sizeCenter, shiftCenter=0) ->
+  constructor: (game, nb, spriteKey, sizeOut, sizeCenter, shiftCenter=0, oneSpriteOnly=null) ->
     debug 'Constructor...', @, 'info', 30, debugThemes.Tracks
 
     assert game?, "Phaser game does not exist"
@@ -28,19 +28,22 @@ class TrackManager
     assert shiftCenter >= TrackManager.MIN_SHIFT_CENTER, "shiftCenter is too low"
     assert shiftCenter <= TrackManager.MAX_SHIFT_CENTER, "shiftCenter is too high"
 
-    # Game phaser component
+    # Args
     @game = game
+    @nb = nb                   # Number of tracks
+    @spriteKey = spriteKey     # Key for sprite
+    @sizeOut = sizeOut         # Size of tracks that goes out (of the screen)
+    @sizeCenter = sizeCenter   # Size of tracks around center
+    @shiftCenter = shiftCenter # Shift between tracks around center
 
-    # Group of tracks
-    @nb = nb
-    @nbHalf = @nb / 2
+    # If null, a track = a sprite. Else, track manager = sprite
+    @oneSpriteOnly = oneSpriteOnly # Use one sprite for all tracks
 
     # Speed of track TODO !
+    # TODO
 
-    # Track properties
-    @sizeOut = sizeOut
-    @sizeCenter = sizeCenter
-    @shiftCenter = shiftCenter
+    # To use later...
+    @nbHalf = @nb / 2
 
     # Group for displayed objects
     @tracksGroup = @game.add.group()
@@ -52,9 +55,29 @@ class TrackManager
     @collectibleSpawnerManager = new CollectibleSpawnerManager @game, @, SpawnModes.friendly
 
 
+  addGraphics: (graphics) ->
+    if @graphics?
+      @graphics.destroy()
+
+    @graphics = graphics
+
+
+  addSprite: (spriteKey) ->
+    assert @graphics?, "Track: No graphics for sprite"
+
+    if @sprite?
+      @sprite.destroy()
+
+
   destroy: ->
     for track in @tracks
       track.destroy()
+
+    if @graphics?
+      @graphics.destroy()
+
+    if @sprite?
+      @sprite.destroy()
 
     @tracksGroup.destroy()
     @tracksGroup = null
@@ -62,7 +85,12 @@ class TrackManager
 
 
   update: ->
+
+    if @sprite?
+      @sprite.y += 0.1
+
     @collectibleSpawnerManager.update()
+
 
   toString: ->
     debug 'ToString...', @, 'info', 30, debugThemes.Tracks

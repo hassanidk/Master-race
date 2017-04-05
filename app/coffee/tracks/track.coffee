@@ -77,7 +77,7 @@ class Track
 
 
   getCoordsInMidLine: (value) ->
-    return Coordinates.Lerp @midLine.getStart(), @midLine.getEnd(), value
+    return Coordinates.LerpUnclamped @midLine.getStart(), @midLine.getEnd(), value
 
 
   getCollectibleStart: ->

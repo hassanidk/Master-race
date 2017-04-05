@@ -16,10 +16,10 @@ class TrackManagerFlat extends TrackManager
   @MIN_SHIFT_OUT = 0
   @MAX_SHIFT_OUT = Infinity
 
-  constructor: (game, nb, sizeOut, sizeCenter, shiftCenter=0, shiftOut=20, outHeight=null, centerHeight=null) ->
+  constructor: (game, nb, spriteKey, sizeOut, sizeCenter, shiftCenter=0, oneSpriteOnly=true, shiftOut=20, outHeight=null, centerHeight=null) ->
     debug 'Constructor...', @, 'info', 30, debugThemes.Tracks
 
-    super game, nb, sizeOut, sizeCenter, shiftCenter
+    super game, nb, spriteKey, sizeOut, sizeCenter, shiftCenter, oneSpriteOnly
 
     assert shiftOut >= TrackManagerFlat.MIN_SHIFT_OUT, "shiftTracks is too low"
     assert shiftOut <= TrackManagerFlat.MAX_SHIFT_OUT, "shiftTracks is too high"
@@ -37,64 +37,63 @@ class TrackManagerFlat extends TrackManager
     # Finally create tracks
     @createTracks()
 
+
   createTracks: () ->
     # Top Left corner of track
-    startCenterX = @game.world.centerX - @nbHalf * (@sizeCenter + @shiftCenter) + @shiftCenter / 2
-    startCenterY = @centerHeight
-    startCenter = new Coordinates startCenterX, startCenterY
+    topLeftX = @game.world.centerX - @nbHalf * (@sizeCenter + @shiftCenter) + @shiftCenter / 2
+    topLeftY = @centerHeight
+    topLeft = new Coordinates topLeftX, topLeftY
 
     # Bottom Left corner of track
-    startOutX = @game.world.centerX - @nbHalf * (@sizeOut + @shiftOut) + @shiftOut / 2
-    startOutY = @outHeight
-    startOut = new Coordinates startOutX, startOutY
+    bottomLeftX = @game.world.centerX - @nbHalf * (@sizeOut + @shiftOut) + @shiftOut / 2
+    bottomLeftY = @outHeight
+    bottomLeft = new Coordinates bottomLeftX, bottomLeftY
 
     # Top Right corner of track
-    endCenter = new Coordinates startCenter.x + @sizeCenter, startCenter.y
+    topRight = new Coordinates topLeft.x + @sizeCenter, topLeft.y
 
     # Bottom Right corner of track
-    endOut = new Coordinates startOut.x + @sizeOut, startOut.y
+    bottomRight = new Coordinates bottomLeft.x + @sizeOut, bottomLeft.y
 
     # Total sizes of tracks (size + shift)
     totalSizeCenter = @sizeCenter + @shiftCenter
     totalSizeOut = @sizeOut + @shiftOut
 
+    if @oneSpriteOnly
+      graphics = @game.add.graphics topLeft.x, topLeft.y
+
     for i in [0..@nb - 1] by 1
-      @createTrack i, startCenter, startOut, endCenter, endOut
+      @tracks[i] = new Track @game, @, i, topLeft, bottomLeft, topRight, bottomRight
 
-      startCenter.x += totalSizeCenter
-      startOut.x += totalSizeOut
-      endCenter.x += totalSizeCenter
-      endOut.x += totalSizeOut
+      if not @oneSpriteOnly
+        graphics = @game.add.graphics()
+        @tracks[i].addGraphics( @createTrackGraphics @tracks[i], graphics )
+        @tracks[i].addSprite @spriteKey
+      else
+        @createTrackGraphics @tracks[i], graphics
 
-    ###
-    sprite = game.add.sprite game.world.centerX, game.world.centerY, @graphics.generateTexture()
-    sprite.anchor.set 0.5, 0
-    ###
+      topLeft.x += totalSizeCenter
+      bottomLeft.x += totalSizeOut
+      topRight.x += totalSizeCenter
+      bottomRight.x += totalSizeOut
 
-    ###
-    ok = @game.add.sprite 0, 0, 'bg'
-    ok.mask = @graphics
-    ###
+    if @oneSpriteOnly
+      @addGraphics graphics
+      @addSprite @spriteKey
 
-    # debug @toString(), @
 
-    # ok = new Track@graphics(game, 'bg')
+  createTrackGraphics: (track, graphics) ->
 
-    # @tracks[0] = new Track game, 0, 0, 'bg', @graphics
+    topLeft = track.getTopLeft()
+    bottomLeft = track.getBottomLeft()
 
-  createTrack: (num, startCenter, startOut, endCenter, endOut) ->
+    graphics.x = topLeft.x
+    graphics.y = topLeft.y
 
-    topLeft = startCenter
-    bottomLeft = startOut
-    topRight = endCenter
-    bottomRight = endOut
-
-    graphics = @game.add.graphics topLeft.x, topLeft.y
-
-    if num >= colors.length
+    if track.num >= colors.length
       color = colors[colors.length - 1]
     else
-      color = colors[num]
+      color = colors[track.num]
 
     diffLeft = Coordinates.Sub bottomLeft, topLeft
 
@@ -104,10 +103,30 @@ class TrackManagerFlat extends TrackManager
     graphics.lineTo @sizeCenter, 0
     graphics.endFill()
 
-    @tracks[num] = new Track @game, @, num, startCenter, startOut, endCenter, endOut
-    @tracks[num].addGraphics graphics
-    @tracks[num].addSprite 'bg'
-    # @tracks[num].addAnimatedSprite 'player'
+    return graphics
+
+
+  addSprite: (spriteKey) ->
+    super spriteKey
+
+    center = @getCenter()
+
+    # @sprite = @game.add.sprite @game.world.centerX, @outHeight - @centerHeight, spriteKey
+
+    @sprite = @game.add.sprite center.x, center.y, spriteKey
+    @sprite.anchor.setTo 0.5, 0.5
+
+    @sprite.mask = @graphics
+
+
+  getCenter: ->
+    firstTrack = @tracks[0]
+    lastTrack = @tracks[@tracks.length - 1]
+
+    minX = Math.min firstTrack.getTopLeft().x, firstTrack.getBottomLeft().x
+    maxX = Math.max lastTrack.getTopRight().x, lastTrack.getBottomRight().x
+
+    return new Coordinates (minX + maxX) / 2, (@outHeight + @centerHeight) / 2
 
 
   toString: ->

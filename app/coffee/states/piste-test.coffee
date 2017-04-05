@@ -28,15 +28,15 @@ class PistePhaser extends Phaser.State
 
   create: ->
 
-    @nbPistes = 9
-    @decalageTop = 0
-    @decalageBottom = 100
-    @size = 150
+    nb = 5
+    spriteKey = 'bg'
+    sizeOut = 120
+    sizeCenter = 1
+    shiftCenter = 0
+    oneSpriteOnly = true
+    shiftOut = 35
 
-
-    # @trackManager = new TrackManagerFlat @game, 5, 150, 150, 20, 20
-    @trackManager = new TrackManagerFlat @game, 5, 120, 1, 0, 35
-    # @trackManager = new TrackManagerCircle(@game, 5, 150)
+    @trackManager = new TrackManagerFlat @game, nb, spriteKey, sizeOut, sizeCenter, shiftCenter, oneSpriteOnly, shiftOut
 
     @myCoin = new Coin @game, @trackManager.tracks[2]
     @trackManager.collectibleSpawnerManager.spawners[2].collectibles.push @myCoin
@@ -59,6 +59,10 @@ class PistePhaser extends Phaser.State
       @createRandomTrackManagerCircle()
 
 
+  render: ->
+    @game.debug.spriteInfo @trackManager.sprite, 32, 32
+
+
   createRandomTrackManagerFlat: ->
     nbTracks = Math.floor(Math.random() * 11) + 1
     trackSizeCenter = Math.floor(Math.random() * (350 - 150) + 150)
@@ -69,6 +73,7 @@ class PistePhaser extends Phaser.State
     outY = @game.world.height + Math.random() * (25 - (-25)) + 25
 
     @trackManager = new TrackManagerFlat @game, nbTracks, trackSizeOut, trackSizeCenter, shiftCenter, shiftOut, outY, centerY
+
 
   createRandomTrackManagerCircle: ->
     # TODO

@@ -11,10 +11,10 @@ debug       = require '../utils/debug.coffee'
 debugThemes = require '../utils/debug-themes.coffee'
 
 class TrackManagerCircle extends TrackManager
-  constructor: (game, nb, sizeOut, sizeCenter, shiftCenter=0) ->
+  constructor: (game, nb, sizeOut, sizeCenter, shiftCenter=0, oneSpriteOnly=true) ->
     debug 'Constructor...', @, 'info', 30, debugThemes.Tracks
 
-    super game, nb, sizeOut, sizeCenter, shiftCenter
+    super game, nb, spriteKey, sizeOut, sizeCenter, shiftCenter, oneSpriteOnly
 
     @game = game
     @graphics = @game.add.graphics @game.world.centerX, @game.world.centerY

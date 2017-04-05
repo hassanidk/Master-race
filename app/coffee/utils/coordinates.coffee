@@ -1,6 +1,7 @@
 assert = require './assert.coffee'
 
 lerp = require './math/lerp.coffee'
+lerpUnclamped = require './math/lerp-unclamped.coffee'
 
 class Coordinates
 
@@ -46,6 +47,11 @@ class Coordinates
     y = lerp coordsA.y, coordsB.y, value
     return new Coordinates x, y
 
+  @LerpUnclamped: (coordsA, coordsB, value) ->
+    Coordinates.Assert2Coords coordsA, coordsB
+    x = lerpUnclamped coordsA.x, coordsB.x, value
+    y = lerpUnclamped coordsA.y, coordsB.y, value
+    return new Coordinates x, y
 
   constructor: (x, y) ->
     @x = x
