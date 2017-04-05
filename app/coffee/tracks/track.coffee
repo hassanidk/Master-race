@@ -35,7 +35,8 @@ class Track
 
   getCollectibleSpawner: () ->
     return @trackManager.collectibleSpawnerManager.spawners[@num]
-
+  getHoleSpawner: () ->
+    return @trackManager.holeSpawnerManager.spawnersHole[@num]
 
   addSprite: (spriteKey) ->
     assert @graphics?, "Track: No graphics for sprite"

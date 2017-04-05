@@ -2,6 +2,7 @@ Phaser = require 'Phaser'
 assert = require '../utils/assert.coffee'
 
 CollectibleSpawnerManager = require '../collectibles-spawner/collectible-spawner-manager.coffee'
+HoleSpawnerManager = require '../holes/hole-spawner-manager.coffee'
 SpawnModes = require '../collectibles-spawner/spawn-modes.coffee'
 
 debug       = require '../utils/debug.coffee'
@@ -53,6 +54,7 @@ class TrackManager
 
     # Collectible Spawner Manager
     @collectibleSpawnerManager = new CollectibleSpawnerManager @game, @, SpawnModes.friendly
+    @holeSpawnerManager = new HoleSpawnerManager @game, @, SpawnModes.friendly
 
 
   addGraphics: (graphics) ->
@@ -90,6 +92,7 @@ class TrackManager
       @sprite.y += 0.1
 
     @collectibleSpawnerManager.update()
+    @holeSpawnerManager.update()
 
 
   toString: ->
