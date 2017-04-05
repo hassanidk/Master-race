@@ -30,20 +30,23 @@ class PistePhaser extends Phaser.State
 
   create: ->
 
-    nb = 5
+    nb = 7
     spriteKey = 'bg'
     sizeOut = 120
     sizeCenter = 1
     shiftCenter = 0
     oneSpriteOnly = true
     shiftOut = 35
+    outHeight = @game.world.height
+    centerHeight = 200
 
-    @trackManager = new TrackManagerFlat @game, nb, spriteKey, sizeOut, sizeCenter, shiftCenter, oneSpriteOnly, shiftOut
+    @trackManager = new TrackManagerFlat @game, nb, spriteKey, sizeOut, sizeCenter, shiftCenter, oneSpriteOnly, shiftOut, outHeight, centerHeight
 
     @myCoin = new Coin @game, @trackManager.tracks[2]
-    @myHole = new Hole @game, @trackManager.tracks[2]
-    @trackManager.holeSpawnerManager.spawnersHole[2].holes.push @myHole
     @trackManager.collectibleSpawnerManager.spawners[2].collectibles.push @myCoin
+
+    # @myHole = new Hole @game, @trackManager.tracks[2]
+    # @trackManager.holeSpawnerManager.spawnersHole[2].holes.push @myHole
 
     @player = new Player @game, @trackManager.tracks[2], 'player', 20
 

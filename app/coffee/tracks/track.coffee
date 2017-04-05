@@ -35,8 +35,11 @@ class Track
 
   getCollectibleSpawner: () ->
     return @trackManager.collectibleSpawnerManager.spawners[@num]
+
+
   getHoleSpawner: () ->
     return @trackManager.holeSpawnerManager.spawnersHole[@num]
+
 
   addSprite: (spriteKey) ->
     assert @graphics?, "Track: No graphics for sprite"
@@ -98,6 +101,14 @@ class Track
 
     # TODO trackManagerCircle
     throw "Unhandled Exception : Track Manager Circle"
+
+
+  getHeight: ->
+    return @trackManager.getHeight()
+
+
+  getWidth: ->
+    return @trackManager.getWidth()
 
 
   getTopLeft: ->

@@ -111,12 +111,24 @@ class TrackManagerFlat extends TrackManager
 
     center = @getCenter()
 
-    # @sprite = @game.add.sprite @game.world.centerX, @outHeight - @centerHeight, spriteKey
-
     @sprite = @game.add.sprite center.x, center.y, spriteKey
     @sprite.anchor.setTo 0.5, 0.5
 
     @sprite.mask = @graphics
+
+
+  getHeight: ->
+    return @outHeight - @centerHeight
+
+
+  getWidth: ->
+    firstTrack = @tracks[0]
+    lastTrack = @tracks[@tracks.length - 1]
+
+    minX = Math.min firstTrack.getTopLeft().x, firstTrack.getBottomLeft().x
+    maxX = Math.max lastTrack.getTopRight().x, lastTrack.getBottomRight().x
+
+    return maxX - minX
 
 
   getCenter: ->
