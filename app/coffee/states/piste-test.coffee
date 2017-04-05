@@ -11,6 +11,7 @@ TrackManagerFlat   = require '../tracks/track-manager-flat.coffee'
 TrackManagerCircle = require '../tracks/track-manager-circle.coffee'
 
 Coin = require '../collectibles-spawner/collectibles/coin.coffee'
+Hole = require '../holes/hole.coffee'
 
 config      = require '../config/config.coffee'
 
@@ -24,6 +25,7 @@ class PistePhaser extends Phaser.State
     @game.load.spritesheet 'dude', 'assets/img/dude.png'
     @game.load.spritesheet 'player', 'assets/img/player.png', 108, 140
     @game.load.image 'coin', 'assets/img/coin.png'
+    @game.load.image 'hole', 'assets/img/hole.png'
     @game.load.image 'bg', 'assets/img/game-background-960.jpg'
 
   create: ->
@@ -39,6 +41,8 @@ class PistePhaser extends Phaser.State
     # @trackManager = new TrackManagerCircle(@game, 5, 150)
 
     @myCoin = new Coin @game, @trackManager.tracks[2]
+    @myHole = new Hole @game, @trackManager.tracks[2]
+    @trackManager.holeSpawnerManager.spawnersHole[2].holes.push @myHole
     @trackManager.collectibleSpawnerManager.spawners[2].collectibles.push @myCoin
 
     @player = new Player @game, @trackManager.tracks[2], 'player', 20
