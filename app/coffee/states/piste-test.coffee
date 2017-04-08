@@ -23,7 +23,7 @@ class PistePhaser extends Phaser.State
 
   preload: ->
     @game.load.spritesheet 'dude', 'assets/img/dude.png'
-    @game.load.spritesheet 'player', 'assets/img/player.png', 108, 140
+    @game.load.atlas 'player', 'assets/img/player.png', 'assets/player.json'
     @game.load.image 'coin', 'assets/img/coin.png'
     @game.load.image 'hole', 'assets/img/hole.png'
     @game.load.image 'bg', 'assets/img/game-background-960.jpg'
@@ -54,6 +54,7 @@ class PistePhaser extends Phaser.State
   update: ->
     @trackManager.update()
     @player.collisionManager.checkCollision()
+
 
     if @input.activePointer.justPressed()
       @trackManager.destroy()

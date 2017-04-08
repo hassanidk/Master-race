@@ -20,6 +20,7 @@ class Hole
     @track = track
 
     startCoords = @track.getCollectibleStart()
+
     @sprite = game.add.sprite startCoords.x, startCoords.y, configHoles.holeSpriteKey
     @sprite.scale.setTo 0.1, 0.1
     @sprite.anchor.setTo 0.5, 0
@@ -47,8 +48,10 @@ class Hole
     @sprite.y += ((@vector.y / 750) * factor)
 
     # Manage scale
-    @sprite.scale.x *= 1.025
-    @sprite.scale.y *= 1.025
+    #@sprite.scale.x *= 1.025
+    #@sprite.scale.y *= 1.025
+
+
 
 
   getBottomBorderHeight: ->
