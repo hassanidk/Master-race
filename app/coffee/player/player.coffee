@@ -19,7 +19,7 @@ configPlayer = require './config-player.coffee'
 class Player
   @SPEED_MIN = 0
   @SPEED_MAX = Infinity
-
+  @i = 0
   constructor: (game, track, textureName, speed) ->
     debug 'Constructor...', @, 'info', 30, debugThemes.Player
 
@@ -40,9 +40,8 @@ class Player
     # Sprite
     @sprite = @game.add.sprite @game.world.centerX, @game.world.centerY, textureName
     @sprite.anchor.setTo 0.5, 0.75
-    @sprite.animations.add 'runRight', [0, 1, 2, 3, 4, 5, 6, 7], speed, true
-    @sprite.animations.add 'runLeft', [8, 9, 10, 11, 12, 13, 14, 15], speed, true
-    @sprite.animations.play 'runRight'
+    @sprite.animations.add 'run', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], @speed, true
+    @sprite.animations.play 'run'
 
     # Position and rotation
     @setPositionFromTrack()
@@ -78,7 +77,6 @@ class Player
   moveLeft: ->
     debug 'moveLeft...', @, 'info', 30, debugThemes.Player
     @move -1
-
 
   moveRight: ->
     debug 'moveRight...', @, 'info', 30, debugThemes.Player
