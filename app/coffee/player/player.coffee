@@ -20,7 +20,7 @@ class Player
   @SPEED_MIN = 0
   @SPEED_MAX = Infinity
   @i = 0
-  constructor: (game, track, textureName, speed) ->
+  constructor: (game, track, textureName, speed, midLinePoint) ->
     debug 'Constructor...', @, 'info', 30, debugThemes.Player
 
     assert game?, "Phaser game does not exist"
@@ -36,6 +36,7 @@ class Player
     @track = track
     @textureName = textureName
     @speed = speed
+    @midLinePoint = midLinePoint
 
     # Sprite
     @sprite = @game.add.sprite @game.world.centerX, @game.world.centerY, textureName
@@ -57,7 +58,7 @@ class Player
     @collisionManager = new CollisionManager @game, @
 
   setPositionFromTrack: () ->
-    @coords = @track.getCoordsInMidLine 0.9
+    @coords = @track.getCoordsInMidLineSegment @midLinePoint
     @sprite.x = @coords.x
     @sprite.y = @coords.y
 
@@ -67,7 +68,7 @@ class Player
 
 
   setScaleFromTrack: () ->
-    @sprite.scale.setTo 0.9, 0.9
+    @sprite.scale.setTo @midLinePoint, @midLinePoint
 
   updateProperties: () ->
     @setPositionFromTrack()
@@ -92,6 +93,11 @@ class Player
     if @track.trackManager instanceof TrackManagerFlat
       if numNewTrack < 0 or numNewTrack >= @track.trackManager.nb
         return
+    else if @track.trackManager instanceof TrackManagerCircle
+      if numNewTrack < 0
+        numNewTrack += @track.trackManager.nb
+      else
+        numNewTrack %= @track.trackManager.nb
 
     @track = @track.trackManager.tracks[numNewTrack]
     @setPositionFromTrack()
