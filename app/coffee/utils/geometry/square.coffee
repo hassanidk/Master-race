@@ -12,19 +12,29 @@ class Square extends Polygon
     bottomLeft = new Coordinates topLeft.x, bottomRight.y
     topRight = new Coordinates bottomRight.x, topLeft.y
 
+    @sideLength = topRight.x - topLeft.x
+
     super topLeft, bottomLeft, topRight, bottomRight
+
+  getDiagonalLength: ->
+    return @sideLength * Math.sqrt 2
+
 
   getTopLeft: ->
     return @points[0]
 
+
   getBottomLeft: ->
     return @points[1]
+
 
   getTopRight: ->
     return @points[2]
 
+
   getBottomRight: ->
     return @points[3]
+
 
   toString: ->
     return """
@@ -38,5 +48,6 @@ class Square extends Polygon
       - Bottom Right :
         #{@getBottomRight().toString()}
     """
+
 
 module.exports = Square

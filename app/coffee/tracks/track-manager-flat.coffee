@@ -65,12 +65,12 @@ class TrackManagerFlat extends TrackManager
     for i in [0..@nb - 1] by 1
       @tracks[i] = new Track @game, @, i, topLeft, bottomLeft, topRight, bottomRight
 
-      if not @oneSpriteOnly
+      if @oneSpriteOnly
+        @createTrackGraphics @tracks[i], graphics
+      else
         graphics = @game.add.graphics()
         @tracks[i].addGraphics( @createTrackGraphics @tracks[i], graphics )
         @tracks[i].addSprite @spriteKey
-      else
-        @createTrackGraphics @tracks[i], graphics
 
       topLeft.x += totalSizeCenter
       bottomLeft.x += totalSizeOut
@@ -111,10 +111,8 @@ class TrackManagerFlat extends TrackManager
 
     center = @getCenter()
 
-    @sprite = @game.add.sprite center.x, center.y, spriteKey
-    @sprite.anchor.setTo 0.5, 0.5
-
-    @sprite.mask = @graphics
+    @sprite.x = center.x
+    @sprite.y = center.y
 
 
   getHeight: ->
