@@ -5,6 +5,8 @@ CollectibleSpawnerManager = require '../collectibles-spawner/collectible-spawner
 HoleSpawnerManager = require '../holes/hole-spawner-manager.coffee'
 SpawnModes = require '../collectibles-spawner/spawn-modes.coffee'
 
+Coordinates = require '../utils/coordinates.coffee'
+colors      = require '../utils/colors.coffee'
 debug       = require '../utils/debug.coffee'
 debugThemes = require '../utils/debug-themes.coffee'
 
@@ -57,6 +59,36 @@ class TrackManager
     @holeSpawnerManager = new HoleSpawnerManager @game, @, SpawnModes.friendly
 
 
+  createTrackGraphics: (track, graphics) ->
+
+    # Get track points
+    topLeft = track.getTopLeft()
+    bottomLeft = track.getBottomLeft()
+    topRight = track.getTopRight()
+    bottomRight = track.getBottomRight()
+
+    # Calculate points from topLeft
+    bottomLeft = Coordinates.Sub bottomLeft, topLeft
+    topRight = Coordinates.Sub topRight, topLeft
+    bottomRight = Coordinates.Sub bottomRight, topLeft
+
+    # Set graphics
+    graphics.x = topLeft.x
+    graphics.y = topLeft.y
+
+    if track.num >= colors.length
+      color = colors[colors.length - 1]
+    else
+      color = colors[track.num]
+
+    graphics.beginFill color
+    graphics.lineTo bottomLeft.x, bottomLeft.y
+    graphics.lineTo bottomRight.x, bottomRight.y
+    graphics.lineTo topRight.x, topRight.y
+    graphics.endFill()
+
+    return graphics
+
   addGraphics: (graphics) ->
     if @graphics?
       @graphics.destroy()
@@ -65,10 +97,18 @@ class TrackManager
 
 
   addSprite: (spriteKey) ->
-    assert @graphics?, "Track: No graphics for sprite"
+    assert @graphics?, "TrackManager: No graphics for sprite"
 
     if @sprite?
       @sprite.destroy()
+
+    @sprite = @game.add.sprite @game.world.centerX, @game.world.centerY, spriteKey
+    @sprite.anchor.setTo 0.5, 0.5
+
+    @sprite.mask = @graphics
+
+  getPlayerRotation: (track) ->
+    return 0
 
 
   destroy: ->

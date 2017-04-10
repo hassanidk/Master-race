@@ -10,14 +10,21 @@ class Triangle extends Polygon
 
     super first, second, third
 
+
+  # TODO PYTHAGORE
+
+
   getFirst: ->
     return @points[0]
+
 
   getSecond: ->
     return @points[1]
 
+
   getThird: ->
     return @points[2]
+
 
   toString: ->
     return """

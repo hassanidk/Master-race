@@ -7,7 +7,7 @@ debug       = require '../utils/debug.coffee'
 debugThemes = require '../utils/debug-themes.coffee'
 
 Polygon     = require '../utils/geometry/polygon.coffee'
-Line = require '../utils/geometry/line.coffee'
+LineSegment = require '../utils/geometry/line-segment.coffee'
 
 clamp = require '../utils/math/clamp.coffee'
 
@@ -20,10 +20,10 @@ class Track
     @num = num
     @shape = new Polygon topLeft.clone(), bottomLeft.clone(), topRight.clone(), bottomRight.clone()
 
-    # Creation of the midLine
+    # Creation of the midLineSegment
     topMiddle = Coordinates.GetMiddle topLeft, topRight
     bottomMiddle = Coordinates.GetMiddle bottomLeft, bottomRight
-    @midLine = new Line topMiddle, bottomMiddle
+    @midLineSegment = new LineSegment topMiddle, bottomMiddle
 
 
   addGraphics: (graphics) ->
@@ -80,27 +80,24 @@ class Track
       @sprite.destroy()
 
 
-  getCoordsInMidLine: (value) ->
-    return Coordinates.LerpUnclamped @midLine.getStart(), @midLine.getEnd(), value
+  getCoordsInMidLineSegment: (value) ->
+    return Coordinates.LerpUnclamped @midLineSegment.getStart(), @midLineSegment.getEnd(), value
 
 
   getCollectibleStart: ->
-    return @midLine.getStart()
+    return @midLineSegment.getStart()
 
 
   getCollectibleEnd: ->
-    return @midLine.getEnd()
+    return @midLineSegment.getEnd()
 
 
   getPlayerPosition: ->
-    return @midLine.getEnd()
+    return @midLineSegment.getEnd()
 
 
   getPlayerRotation: ->
-    return 0
-
-    # TODO trackManagerCircle
-    throw "Unhandled Exception : Track Manager Circle"
+    return @trackManager.getPlayerRotation @
 
 
   getHeight: ->
