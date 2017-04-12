@@ -128,8 +128,10 @@ class TrackManager
 
   update: ->
 
+    ###
     if @sprite?
       @sprite.y += 0.1
+    ###
 
     @collectibleSpawnerManager.update()
     @holeSpawnerManager.update()

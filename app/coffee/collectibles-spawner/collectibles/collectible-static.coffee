@@ -15,7 +15,7 @@ class CollectibleStatic extends Collectible
     startCoords = track.getCollectibleStart()
     sprite = game.add.sprite startCoords.x, startCoords.y, spriteKey
     sprite.scale.setTo 0.1, 0.1
-    sprite.anchor.setTo 0.5, 0
+    sprite.anchor.setTo 0.5, 0.5
     super game, track, sprite
 
 
