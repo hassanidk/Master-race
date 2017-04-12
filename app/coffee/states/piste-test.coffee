@@ -15,6 +15,8 @@ TrackManagerCircle = require '../tracks/track-manager-circle.coffee'
 Coin = require '../collectibles-spawner/collectibles/coin.coffee'
 Hole = require '../holes/hole.coffee'
 
+Vortex = require '../vortex/vortex.coffee'
+
 debug       = require '../utils/debug.coffee'
 debugThemes = require '../utils/debug-themes.coffee'
 
@@ -27,11 +29,13 @@ class PistePhaser extends Phaser.State
     @game.load.image 'coin', 'assets/img/coin.png'
     @game.load.image 'hole', 'assets/img/hole.png'
     @game.load.image 'bg', 'assets/img/game-background-960.jpg'
+    @game.load.image 'space', 'assets/img/space.jpg'
+    @game.load.image 'vortex', 'assets/img/cyberglow.png'
 
   create: ->
 
     nb = 10
-    spriteKey = 'bg'
+    spriteKey = 'space'
     sizeOut = 120
     sizeCenter = 1
     shiftCenter = 0
@@ -40,8 +44,13 @@ class PistePhaser extends Phaser.State
     outHeight = @game.world.height
     centerHeight = 200
 
-    startAngle = new Degrees 0
+    startAngle = new Degrees 262
     diffAngle = new Degrees 15
+
+    startCoordsVortex = new Coordinates 0, 0
+
+    @vortex = new Vortex @game, 'vortex', startCoordsVortex, @game.width, @game.height
+
 
     # @trackManager = new TrackManagerFlat @game, nb, spriteKey, sizeOut, sizeCenter, shiftCenter, oneSpriteOnly, shiftOut, outHeight, centerHeight
     @trackManager = new TrackManagerCircle @game, nb, spriteKey, startAngle, diffAngle, sizeCenter, shiftCenter, oneSpriteOnly
@@ -59,6 +68,7 @@ class PistePhaser extends Phaser.State
     @trackManager.update()
     @player.collisionManager.checkCollision()
 
+    @vortex.update()
 
     if @input.activePointer.justPressed()
       @trackManager.destroy()
