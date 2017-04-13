@@ -42,13 +42,17 @@ class Test extends Phaser.State
   create: ->
     @background = @game.add.sprite 0, 0, 'space'
 
-    squareTopLeft = new Coordinates @game.world.centerX - 100, @game.world.centerY - 100
-    squareBottomRight = new Coordinates @game.world.centerX + 100, @game.world.centerY + 100
-    square = new Square squareTopLeft, squareBottomRight
+    point0 = new Coordinates @game.world.centerX - 100, @game.world.centerY - 100
+    point1 = new Coordinates point0.x + 200, point0.y
+    point2 = new Coordinates point0.x, point0.y + 200
+    point3 = new Coordinates point1.x, point1.y + 200
+    point4 = new Coordinates point1.x + 100, point1.y + 100
 
-    graphics = @game.add.graphics square.getTopLeft().x, square.getTopLeft().y
+    shape = new Polygon point0, point1, point4, point3, point2
 
-    @graphics = square.toGraphics graphics
+    graphics = @game.add.graphics point0.x, point0.y
+
+    @graphics = shape.toGraphics graphics
 
 
 module.exports = Test
