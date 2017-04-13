@@ -14,7 +14,12 @@ class Square extends Polygon
 
     @sideLength = topRight.x - topLeft.x
 
-    super topLeft, bottomLeft, topRight, bottomRight
+    super topLeft, bottomLeft, bottomRight, topRight
+
+
+  getSideLength: ->
+    return @sideLength
+
 
   getDiagonalLength: ->
     return @sideLength * Math.sqrt 2
@@ -29,11 +34,11 @@ class Square extends Polygon
 
 
   getTopRight: ->
-    return @points[2]
+    return @points[3]
 
 
   getBottomRight: ->
-    return @points[3]
+    return @points[2]
 
 
   toString: ->

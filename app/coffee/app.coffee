@@ -13,6 +13,7 @@ Preload  = require './states/preload.coffee'
 Menu     = require './states/menu.coffee'
 Game     = require './states/game.coffee'
 Piste    = require './states/piste-test.coffee'
+Test = require './states/test.coffee'
 
 config      = require './config/config.coffee'
 debug       = require './utils/debug.coffee'
@@ -30,6 +31,7 @@ game.state.add 'Preload', Preload
 game.state.add 'Menu', Menu
 game.state.add 'Game', Game
 game.state.add 'Piste', Piste
+game.state.add 'Test', Test
 
 debug 'Phaser States : ', null, 'info', 10, debugThemes.Phaser, game.state.states
 

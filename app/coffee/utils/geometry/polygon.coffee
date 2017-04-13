@@ -1,3 +1,5 @@
+Phaser = require 'Phaser'
+
 Coordinates = require '../coordinates.coffee'
 
 assert = require '../assert.coffee'
@@ -25,6 +27,26 @@ class Polygon
       sumY += point.y
 
     return new Coordinates sumX / nbPoints, sumY / nbPoints
+
+
+  toGraphics: (graphics) ->
+    assert graphics? and graphics instanceof Phaser.Graphics, "Graphics doesn't exist"
+    assert @points.length > 0, "No Points to draw"
+
+    firstPoint = @points[0]
+
+    graphics.beginFill 0xFFFFFF
+
+    for i in [0..@points.length - 1] by 1
+      nextPoint = @points[(i + 1) % @points.length]
+
+      diffPoint = Coordinates.Sub nextPoint, firstPoint
+
+      graphics.lineTo diffPoint.x, diffPoint.y
+
+    graphics.endFill()
+
+    return graphics
 
 
   toString: ->
