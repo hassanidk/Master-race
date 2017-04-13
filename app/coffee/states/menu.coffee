@@ -19,7 +19,7 @@ class Menu extends Phaser.State
   create: ->
     debug 'Create...', @, 'info', 30, debugThemes.Phaser
 
-    @state.start 'Piste'
+    @state.start 'Test'
 
     # Set game background
     @game.add.tileSprite 0, 0, config.width, config.height, 'menu-background'
