@@ -99,38 +99,21 @@ class Test extends Phaser.State
     ]
     ###
 
-    fragmentSrc = [
-        "precision mediump float;"
+    fragmentSrcPart1 = [
+      "precision mediump float;"
 
-        "uniform float     time;"
-        "uniform vec2      resolution;"
-        "uniform sampler2D iChannel0;"
+      "uniform float     time;"
+      "uniform vec2      resolution;"
+      "uniform sampler2D iChannel0;"
 
-        "#ifdef GL_ES"
-        "precision highp float;"
-        "#endif"
+      "#ifdef GL_ES"
+      "precision highp float;"
+      "#endif"
 
-        "void main( void ) {"
-          "float array[10];"
-          "array[0] = 1.0;"
-
-          "vec2 something = gl_FragCoord.xy;"
-
-          "float color = 0.0;"
-
-          "if (something.x > 400.0)"
-          "{"
-            "color = 1.0;"
-            "if (something.y > 400.0)"
-            "{"
-              "color = 0.5;"
-            "}"
-          "}"
-
-          "gl_FragColor = vec4(color, color, color, 0.0);"
-        "}"
+      "void main( void ) {"
     ]
 
+    fragmentSrc = fragmentSrcPart1.concat(fragmentSrcPart2, fragmentSrcPart3)
 
     graphics = @game.add.graphics point0.x, point0.y
 
@@ -152,6 +135,13 @@ class Test extends Phaser.State
     @sprite.filters = [ @filter ]
 
     @graphics.destroy()
+
+  addPointForGlsl: (number) ->
+    str = number.toString()
+    if str.length >= 2 and str.substring(str.length - 2, 1) != '.'
+      str = str.concat '.0'
+
+    return str
 
   update: ->
     @filter.update()
